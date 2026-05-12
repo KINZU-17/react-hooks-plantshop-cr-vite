@@ -7,22 +7,19 @@ function PlantPage() {
   const [plants, setPlants] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch plants on mount
   useEffect(() => {
     fetch("http://localhost:6001/plants")
       .then((r) => r.json())
       .then((data) => setPlants(data));
   }, []);
 
-  // Update state when a new plant is added via the form
   function handleAddPlant(newPlant) {
-    setPlants((prevPlants) => [...prevPlants, newPlant]);
+    setPlants([...plants, newPlant]);
   }
 
-  // Filter the plants list based on search input
-  const displayedPlants = plants.filter((plant) =>
-    plant.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const displayedPlants = plants.filter((plant) => {
+    return plant.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <main>
