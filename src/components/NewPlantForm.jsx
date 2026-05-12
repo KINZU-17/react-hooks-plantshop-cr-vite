@@ -7,25 +7,32 @@ function NewPlantForm({ onAddPlant }) {
     price: "",
   });
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    
-    // POST request to persist data
-    fetch("http://localhost:6001/plants", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.name,
-        image: formData.image,
-        price: parseFloat(formData.price), // Convert string to number for backend
-      }),
-    })
-      .then((r) => r.json())
-      .then((newPlant) => {
-        onAddPlant(newPlant);
-        setFormData({ name: "", image: "", price: "" }); // Reset form
-      });
-  }
+  // src/components/NewPlantForm.jsx
+
+function handleSubmit(e) {
+  e.preventDefault();
+  
+  fetch("http://localhost:6001/plants", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      image: image,
+      // CRITICAL FIX: Convert the string price to a number
+      price: Number(price), 
+    }),
+  })
+    .then((r) => r.json())
+    .then((newPlant) => {
+      onAddPlant(newPlant);
+      // Reset form fields
+      setName("");
+      setImage("");
+      setPrice("");
+    });
+}
 
   return (
     <div className="new-plant-form">
